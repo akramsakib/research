@@ -62,7 +62,7 @@ join_tailnet_if_needed() {
 Tailscale is installed and running, but this Arena node is not logged in.
 Set a one-time/ephemeral Tailscale auth key and rerun, for example:
 
-  export TAILSCALE_AUTHKEY='tskey-auth-...'
+  export TAILSCALE_AUTHKEY='YOUR_TAILSCALE_AUTH_KEY'
   ./setup-kali-link.sh
 
 The key is passed directly to tailscale and is not saved by this script.
