@@ -1,0 +1,139 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORG_ADMIN_X71_LOGIN_TEST</title><style>body{font-family:system-ui,-apple-system,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55;color:#222}code,pre{background:#f3f4f6;border-radius:4px}code{padding:.1rem .25rem}pre{padding:1rem;overflow:auto}table{border-collapse:collapse;width:100%;margin:1rem 0}th,td{border:1px solid #ccc;padding:.45rem;text-align:left}th{background:#eee}.notice{background:#fff4cc;padding:.75rem;border-left:4px solid #d99b00}</style></head><body><div class="notice">BNPBD.ORG research report — sanitized for public publication</div><h1>org-admin-x71.bnpbd.org login — initial low-impact test</h1>
+<p>Date: 2026-09-22</p>
+<p>Target tested:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/login
+</code></pre>
+<p>Method: low-impact public HTTPS requests from Kali over Tailscale. No credential attempts, brute force, bypass attempts, exploit payloads, or high-volume fuzzing were performed.</p>
+<h2>Executive summary</h2>
+<p>The admin login page is live and appears to be an Angular single-page application backed by:</p>
+<pre><code class="language-text">https://api-v2.bnpbd.org/api/admin/
+</code></pre>
+<p>The unauthenticated admin data endpoint returned <code>401 Unauthorized</code>, which is good. The CSRF endpoint returns a CSRF token and an <code>_csrf</code> cookie with <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite=Strict</code>, also good.</p>
+<p>Initial hardening issues to review:</p>
+<ol>
+<li>The frontend does not send a <code>Content-Security-Policy</code> header.</li>
+<li>The public JavaScript bundle exposes admin API route names and key-like client-side constants. If any of those values are treated as real secrets, they must be rotated and moved server-side.</li>
+<li>API CORS preflight responses for admin endpoints reflected an arbitrary Origin with <code>Access-Control-Allow-Credentials: true</code>; actual GET responses did not allow the arbitrary Origin, so this was not confirmed exploitable, but the preflight behavior should be corrected.</li>
+<li>The public frontend references an admin registration endpoint name: <code>signup-bnpbd-admin</code>. Confirm this route is disabled or strongly protected in production.</li>
+</ol>
+<h2>Confirmed routes and behavior</h2>
+<h3>Frontend routes</h3>
+<table>
+<thead>
+<tr>
+<th>Request</th>
+<th style="text-align: right;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET https://org-admin-x71.bnpbd.org/</code></td>
+<td style="text-align: right;"><code>200</code></td>
+</tr>
+<tr>
+<td><code>GET https://org-admin-x71.bnpbd.org/login</code></td>
+<td style="text-align: right;"><code>200</code></td>
+</tr>
+<tr>
+<td><code>GET https://org-admin-x71.bnpbd.org/dashboard</code></td>
+<td style="text-align: right;"><code>200</code> SPA fallback</td>
+</tr>
+<tr>
+<td><code>GET https://org-admin-x71.bnpbd.org/admin</code></td>
+<td style="text-align: right;"><code>200</code> SPA fallback</td>
+</tr>
+<tr>
+<td><code>GET https://org-admin-x71.bnpbd.org/assets/</code></td>
+<td style="text-align: right;"><code>403</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>/dashboard</code> and <code>/admin</code> paths returning the SPA is normal for a client-side router. Server-side authorization must be enforced by the API, not by the Angular route guard alone.</p>
+<h3>Backend/API checks</h3>
+<table>
+<thead>
+<tr>
+<th>Request</th>
+<th style="text-align: right;">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET https://api-v2.bnpbd.org/api/csrf-token</code></td>
+<td style="text-align: right;"><code>200</code>, returns CSRF token</td>
+</tr>
+<tr>
+<td><code>GET https://api-v2.bnpbd.org/api/admin/logged-in-admin-data</code> without token</td>
+<td style="text-align: right;"><code>401 Unauthorized</code></td>
+</tr>
+</tbody>
+</table>
+<p>CSRF cookie observed:</p>
+<pre><code class="language-text">_csrf=&lt;value&gt;; Path=/; HttpOnly; Secure; SameSite=Strict
+</code></pre>
+<p>This is a good baseline configuration.</p>
+<h2>Response header observations</h2>
+<h3>Frontend <code>https://org-admin-x71.bnpbd.org/login</code></h3>
+<p>Present:</p>
+<pre><code class="language-text">Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer-when-downgrade
+Permissions-Policy: geolocation=(), microphone=(), camera=()
+</code></pre>
+<p>Not observed on the frontend response:</p>
+<pre><code class="language-text">Content-Security-Policy
+</code></pre>
+<p>Recommendation: add a production CSP. Start in <code>Content-Security-Policy-Report-Only</code>, then enforce once false positives are resolved.</p>
+<h3>API <code>https://api-v2.bnpbd.org/api/csrf-token</code></h3>
+<p>Present:</p>
+<pre><code class="language-text">Content-Security-Policy: default-src 'self'; ...
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+Access-Control-Allow-Credentials: true
+</code></pre>
+<h2>Public JavaScript indicators</h2>
+<p>The public app bundle confirms this is the admin SPA. Relevant non-secret indicators:</p>
+<pre><code class="language-text">Application name: BNPBD.ORG Admin
+API base: https://api-v2.bnpbd.org
+Admin API base path: /api/admin/
+Admin login route: login
+Admin dashboard/base route: dashboard
+Login API route name: login-bnpbd-admin
+Logged-in data route name: logged-in-admin-data
+Admin registration route name: signup-bnpbd-admin
+</code></pre>
+<p>The bundle also contains key-like client-side constants related to admin/user/API token storage. Since browser-delivered JavaScript is public, these must not be treated as secrets. If they protect sensitive data, rotate them and redesign the mechanism so secrets remain server-side.</p>
+<h2>CORS observation</h2>
+<p>Preflight request sent:</p>
+<pre><code class="language-text">OPTIONS https://api-v2.bnpbd.org/api/admin/login-bnpbd-admin
+Origin: https://evil.example
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type,x-csrf-token,authorization
+</code></pre>
+<p>Observed response:</p>
+<pre><code class="language-text">204
+Access-Control-Allow-Origin: https://evil.example
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE
+Access-Control-Allow-Headers: Authorization,Content-Type,X-CSRF-Token,administrator
+</code></pre>
+<p>Follow-up <code>GET</code> requests with <code>Origin: https://evil.example</code> did <strong>not</strong> include <code>Access-Control-Allow-Origin</code>, while the approved origin did. Therefore this is currently a hardening finding / needs validation, not a proven data-exfiltration issue.</p>
+<p>Recommendation: make preflight behavior match the same strict allowlist used by actual responses. Do not reflect arbitrary origins when <code>Access-Control-Allow-Credentials: true</code> is enabled.</p>
+<h2>Source map check</h2>
+<p>Requesting:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js.map
+</code></pre>
+<p>returned the SPA HTML fallback, not a valid source map JSON file. No source map exposure was confirmed in this initial check.</p>
+<h2>Recommended next safe tests</h2>
+<ol>
+<li>Confirm with the team whether admin registration should exist in production.</li>
+<li>Review CORS middleware configuration for all <code>/api/admin/*</code> routes.</li>
+<li>Add or tune frontend CSP.</li>
+<li>Validate that every privileged <code>/api/admin/*</code> endpoint returns <code>401/403</code> without a valid admin token.</li>
+<li>Confirm login has rate limiting, lockout/slowdown, MFA for admins, and alerting for failed login bursts. Do this only with an approved test account and written rate limits.</li>
+<li>Review token storage strategy. Prefer short-lived tokens, secure refresh flow, and server-side invalidation on logout/password change.</li>
+</ol></body></html>

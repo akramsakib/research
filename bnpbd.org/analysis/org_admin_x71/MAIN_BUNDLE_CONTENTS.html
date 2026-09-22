@@ -1,0 +1,81 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAIN_BUNDLE_CONTENTS</title><style>body{font-family:system-ui,-apple-system,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55;color:#222}code,pre{background:#f3f4f6;border-radius:4px}code{padding:.1rem .25rem}pre{padding:1rem;overflow:auto}table{border-collapse:collapse;width:100%;margin:1rem 0}th,td{border:1px solid #ccc;padding:.45rem;text-align:left}th{background:#eee}.notice{background:#fff4cc;padding:.75rem;border-left:4px solid #d99b00}</style></head><body><div class="notice">BNPBD.ORG research report — sanitized for public publication</div><h1>org-admin-x71 main JavaScript bundle — static contents</h1>
+<p>Bundle: <code>https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js</code></p>
+<p>SHA-256: <code>072d79b37ab3ba050fcc2f5a888b7fce8e03ed67e9425192323eca3475998b0b</code></p>
+<p>Size: <code>593,588 bytes</code></p>
+<h2>What it is</h2>
+<p>This is a production Angular/Webpack bundle for the application identified in the code as:</p>
+<pre><code class="language-text">BNPBD.ORG Admin
+</code></pre>
+<p>It contains the app's configuration, authentication services, route guards, API service definitions, storage helpers, and Angular framework code.</p>
+<h2>Important configuration</h2>
+<pre><code class="language-text">API base: https://api-v2.bnpbd.org
+FTP/base auxiliary API: https://api.bnpbd.org
+Admin API prefix: /api/admin/
+Admin login route: /login
+Admin post-login route: /dashboard
+Version: 2
+</code></pre>
+<h2>Admin API routes visible in this file</h2>
+<pre><code class="language-text">GET/POST /api/admin/login-bnpbd-admin
+POST     /api/admin/signup-bnpbd-admin
+GET      /api/admin/logged-in-admin-data
+</code></pre>
+<p>The bundle also references the CSRF service endpoint:</p>
+<pre><code class="language-text">/api/csrf-token
+</code></pre>
+<h2>Authentication flow</h2>
+<p>The login service sends credentials to <code>login-bnpbd-admin</code>. On a successful response it expects a token and fields such as:</p>
+<pre><code class="language-text">token
+tokenExpiredIn
+admin ID
+role
+permissions
+pageAccess
+</code></pre>
+<p>It then stores an object containing those fields in encrypted <code>localStorage</code>, starts a client-side expiry timer, and navigates to <code>dashboard</code>.</p>
+<p>The API authentication header used elsewhere in the bundle is named:</p>
+<pre><code class="language-text">administrator
+</code></pre>
+<h2>Client-side storage and hardcoded key material</h2>
+<p>The bundle defines storage names similar to:</p>
+<pre><code class="language-text">SOFTLAB_WEB_V2_ADMIN_TOKEN_2
+SOFTLAB_WEB_V2_ADMIN_SESSION_2
+SOFTLAB_WEB_V2_USER_0_2
+</code></pre>
+<p>It also contains constants used as CryptoJS AES passphrases:</p>
+<pre><code class="language-text">SOFT_2021_IT_1998
+SOFT_ADMIN_1995_&amp;&amp;_SOJOL_dEv
+SOFT_ADMIN_1996_&amp;&amp;_SOBUR_dEv
+SOFT_API_1998_&amp;&amp;_SAZIB_dEv
+</code></pre>
+<p>These are not server-side secrets because they are shipped to every browser. The encryption protects against casual local inspection only. Anyone who can execute JavaScript in the admin origin can read the bundle and use the same decryption code/key material, or interact with the running app.</p>
+<h2>Route guards</h2>
+<p>The bundle has a client-side guard that redirects unauthenticated users to <code>/login</code>, and another that redirects authenticated users away from the login page to <code>/dashboard</code>.</p>
+<p>These guards are only UX/navigation controls. They are not an authorization boundary. The API must continue to enforce authorization server-side, which prior tests showed with <code>401 Unauthorized</code> for a fake admin token.</p>
+<h2>Framework/security-related contents</h2>
+<p>This is a compiled Angular application and includes Angular sanitizer/security code. Static string counts in the main bundle were:</p>
+<pre><code class="language-text">document.write: 0
+eval(: 0
+new Function: 0
+insertAdjacentHTML: 0
+bypassSecurityTrustHtml: 2
+innerHTML: 7
+</code></pre>
+<p>The presence of Angular sanitizer APIs or <code>innerHTML</code> strings alone does not prove XSS. No user-controlled source-to-sink path was established in this static review.</p>
+<h2>What is not inside it</h2>
+<ul>
+<li>No real administrator username/password was found.</li>
+<li>No valid admin session token was found.</li>
+<li>The visible AES constants are not proof of an API compromise.</li>
+<li>The route names do not bypass backend authorization.</li>
+<li>No confirmed XSS was found from this bundle review.</li>
+</ul>
+<h2>Security conclusions</h2>
+<ol>
+<li>The bundle exposes useful application metadata and API route names.</li>
+<li>Client-side AES keys should be treated as public and not relied on for confidentiality.</li>
+<li>Sensitive admin session state would be safer in a server-controlled session using an <code>HttpOnly</code>, <code>Secure</code>, appropriately <code>SameSite</code> cookie, where compatible with the application.</li>
+<li>The admin frontend should deploy a strong Content-Security-Policy, especially while sensitive state is accessible to JavaScript.</li>
+<li>The API must remain the authoritative authorization layer; current fake-token checks returned <code>401</code>.</li>
+<li>If a genuine admin-origin XSS were later found, the localStorage token design would increase impact. XSS has not been confirmed.</li>
+</ol></body></html>

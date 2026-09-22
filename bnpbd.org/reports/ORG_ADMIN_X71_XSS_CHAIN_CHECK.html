@@ -1,0 +1,133 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORG_ADMIN_X71_XSS_CHAIN_CHECK</title><style>body{font-family:system-ui,-apple-system,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55;color:#222}code,pre{background:#f3f4f6;border-radius:4px}code{padding:.1rem .25rem}pre{padding:1rem;overflow:auto}table{border-collapse:collapse;width:100%;margin:1rem 0}th,td{border:1px solid #ccc;padding:.45rem;text-align:left}th{background:#eee}.notice{background:#fff4cc;padding:.75rem;border-left:4px solid #d99b00}</style></head><body><div class="notice">BNPBD.ORG research report — sanitized for public publication</div><h1>org-admin-x71.bnpbd.org — XSS chain check</h1>
+<p>Date: 2026-09-22</p>
+<p>Target:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/login
+</code></pre>
+<p>Goal: check whether the earlier note — "client-side token storage is low/informational by itself but potentially high if combined with XSS" — can be validated with a safe XSS check.</p>
+<p>Scope/method: low-impact reflected/DOM XSS checks on unauthenticated login/admin SPA routes and static review of public JavaScript. No credential capture, stored payloads, brute force, persistence, phishing, or authenticated actions were performed.</p>
+<hr />
+<h2>Result</h2>
+<p>No XSS was confirmed in this check.</p>
+<p>The risk remains a <strong>conditional impact chain</strong>:</p>
+<pre><code class="language-text">If an attacker finds XSS on the admin origin,
+then the admin token stored in browser localStorage is likely exposed/usable,
+because the frontend stores admin session data client-side and ships the encryption key in public JavaScript.
+</code></pre>
+<p>I did not prove the first condition, XSS.</p>
+<hr />
+<h2>Reflected XSS checks</h2>
+<p>I sent benign canary payloads to common unauthenticated locations:</p>
+<pre><code class="language-text">/login?xss=&lt;canary payload&gt;
+/login?message=&lt;canary payload&gt;
+/login?error=&lt;canary payload&gt;
+/login?returnUrl=&lt;canary payload&gt;
+/login?redirect=&lt;canary payload&gt;
+/login?next=&lt;canary payload&gt;
+/login/&lt;canary payload&gt;
+/ &lt;canary payload path&gt;
+</code></pre>
+<p>Marker used:</p>
+<pre><code class="language-text">ARENA_REFLECT_20260922
+</code></pre>
+<p>Result:</p>
+<pre><code class="language-text">No raw payload reflection in the server-rendered HTML response.
+No reflected XSS confirmed.
+</code></pre>
+<p>The server consistently returned the Angular SPA HTML without reflecting the query/path payload.</p>
+<hr />
+<h2>Browser/DOM XSS check</h2>
+<p>I attempted a headless Chromium check with a harmless canary payload that would only set a DOM attribute/title if executed:</p>
+<pre><code class="language-text">data-xss-canary=&quot;ARENA_XSS_CANARY_20260922&quot;
+</code></pre>
+<p>Tested examples:</p>
+<pre><code class="language-text">/login?xss=&lt;img onerror=...&gt;
+/login?message=&lt;svg onload=...&gt;
+/login?error=&lt;img onerror=...&gt;
+/login?returnUrl=javascript:...
+/login?redirect=javascript:...
+/login?next=javascript:...
+/login#&lt;img onerror=...&gt;
+/#/login?xss=&lt;img onerror=...&gt;
+/login/&lt;img onerror=...&gt;
+</code></pre>
+<p>Result:</p>
+<pre><code class="language-text">No canary execution observed.
+</code></pre>
+<p>Important limitation: headless Chromium was served a Cloudflare "Just a moment..." challenge page instead of the real SPA, so this dynamic DOM test is <strong>not conclusive</strong> for the real browser app.</p>
+<hr />
+<h2>Static JavaScript review</h2>
+<p>Bundle reviewed:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js
+SHA-256: 072d79b37ab3ba050fcc2f5a888b7fce8e03ed67e9425192323eca3475998b0b
+</code></pre>
+<h3>Dangerous sink scan</h3>
+<p>No obvious direct app use found for:</p>
+<pre><code class="language-text">document.write
+eval(
+new Function
+insertAdjacentHTML
+</code></pre>
+<p>Observed <code>innerHTML</code> and <code>bypassSecurityTrustHtml</code> usage appears to come from Angular sanitization / third-party spinner UI code, not from a clearly user-controlled admin-login input.</p>
+<p>The app includes a snackbar component for showing success/warn/error messages. The visible template appears to render data as Angular text interpolation, which is normally escaped.</p>
+<h3>Token/session impact evidence</h3>
+<p>The public JavaScript shows:</p>
+<ul>
+<li>Admin token is read from local client storage after login.</li>
+<li>Admin API requests include a custom header:</li>
+</ul>
+<pre><code class="language-text">administrator: &lt;admin token&gt;
+</code></pre>
+<ul>
+<li>Unsafe requests include:</li>
+</ul>
+<pre><code class="language-text">X-CSRF-Token: &lt;csrf token&gt;
+withCredentials: true
+</code></pre>
+<ul>
+<li>Admin session data is stored in <code>localStorage</code> under an app-specific key.</li>
+<li>The stored object includes fields resembling:</li>
+</ul>
+<pre><code class="language-text">token
+expiredDate
+adminId
+role
+permissions
+adminPageAccess
+</code></pre>
+<ul>
+<li>The data is AES-encrypted client-side using key-like constants embedded in the public JavaScript bundle.</li>
+</ul>
+<p>Security interpretation:</p>
+<pre><code class="language-text">This client-side encryption is obfuscation, not a strong security boundary.
+If JavaScript executes on the admin origin, the attacker can likely access/use the same frontend runtime and token material.
+</code></pre>
+<hr />
+<h2>Current conclusion</h2>
+<p>Severity status after this check:</p>
+<pre><code class="language-text">XSS: Not confirmed
+Token-storage issue: Low/Informational by itself
+Combined impact if future/admin-origin XSS exists: High
+</code></pre>
+<p>So the previous statement remains accurate, but the exploitable XSS prerequisite was <strong>not proven</strong>.</p>
+<hr />
+<h2>What would be needed for deeper validation</h2>
+<p>To safely validate the combined impact further, use one of these controlled options:</p>
+<ol>
+<li>A staging environment with the same frontend/backend.</li>
+<li>A dedicated non-privileged admin test account.</li>
+<li>Written permission to test specific authenticated input fields for stored/reflected XSS.</li>
+<li>A normal browser session that can pass Cloudflare, with no real admin credentials exposed to the test payload.</li>
+</ol>
+<p>Do <strong>not</strong> test stored XSS payloads in production admin fields without explicit written scope and a rollback plan.</p>
+<hr />
+<h2>Recommended mitigations now</h2>
+<p>Even without confirmed XSS, reduce the potential impact:</p>
+<ol>
+<li>Add a strict Content-Security-Policy to the admin frontend.</li>
+<li>Treat frontend encryption keys as public; do not rely on them for real secrecy.</li>
+<li>Prefer HTTP-only, Secure, SameSite cookies or another server-controlled session model where feasible.</li>
+<li>Use short-lived admin access tokens and server-side invalidation.</li>
+<li>Invalidate admin sessions on logout, password change, role change, and suspicious activity.</li>
+<li>Keep CSRF protections enabled for state-changing endpoints.</li>
+<li>Audit all admin inputs that render rich text, file names, profile data, notifications, CMS content, and error messages.</li>
+</ol></body></html>

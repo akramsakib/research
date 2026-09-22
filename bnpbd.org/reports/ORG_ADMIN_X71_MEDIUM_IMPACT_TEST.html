@@ -1,0 +1,242 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORG_ADMIN_X71_MEDIUM_IMPACT_TEST</title><style>body{font-family:system-ui,-apple-system,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55;color:#222}code,pre{background:#f3f4f6;border-radius:4px}code{padding:.1rem .25rem}pre{padding:1rem;overflow:auto}table{border-collapse:collapse;width:100%;margin:1rem 0}th,td{border:1px solid #ccc;padding:.45rem;text-align:left}th{background:#eee}.notice{background:#fff4cc;padding:.75rem;border-left:4px solid #d99b00}</style></head><body><div class="notice">BNPBD.ORG research report — sanitized for public publication</div><h1>org-admin-x71.bnpbd.org — controlled medium-impact test</h1>
+<p>Date: 2026-09-22</p>
+<p>Target:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/login
+https://api-v2.bnpbd.org/api/admin/
+</code></pre>
+<h2>Scope and safety controls</h2>
+<p>This was a controlled medium-impact test. I performed a small number of active API requests to validate the CORS/token-storage concerns without trying to compromise accounts.</p>
+<p>Performed:</p>
+<ul>
+<li>Valid CSRF retrieval from the API.</li>
+<li>One deliberately invalid admin login attempt using a non-existent <code>.invalid</code> email/username and non-real password.</li>
+<li>Empty JSON POST to the admin registration endpoint to verify whether unauthenticated registration is blocked.</li>
+<li>Fake admin-token request to verify token validation behavior.</li>
+<li>Static public JavaScript review.</li>
+</ul>
+<p>Not performed:</p>
+<ul>
+<li>No real credentials.</li>
+<li>No brute force.</li>
+<li>No password spraying.</li>
+<li>No account creation.</li>
+<li>No stored XSS payloads.</li>
+<li>No destructive or persistence actions.</li>
+</ul>
+<hr />
+<h2>1. Controlled login POST with valid CSRF</h2>
+<p>Flow:</p>
+<ol>
+<li><code>GET https://api-v2.bnpbd.org/api/csrf-token</code></li>
+<li>Preserve returned <code>_csrf</code> cookie.</li>
+<li>Send exactly one invalid login POST to:</li>
+</ol>
+<pre><code class="language-text">POST https://api-v2.bnpbd.org/api/admin/login-bnpbd-admin
+</code></pre>
+<p>Payload used contained only deliberately fake/non-existent values:</p>
+<pre><code class="language-text">username/email: arena-security-test-invalid@example.invalid
+password: non-real test string
+</code></pre>
+<h3>Results</h3>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th style="text-align: right;">CSRF GET</th>
+<th style="text-align: right;">Invalid login POST</th>
+<th>ACAO on POST</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">403 <code>Access Denied</code></td>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+</tr>
+<tr>
+<td><code>https://www.bnpbd.org</code></td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">403 <code>Access Denied</code></td>
+<td><code>https://www.bnpbd.org</code></td>
+</tr>
+<tr>
+<td><code>https://evil.example</code></td>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">403 <code>Access Denied</code></td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>Observed body for allowed origins:</p>
+<pre><code class="language-json">{&quot;statusCode&quot;:403,&quot;message&quot;:&quot;Access Denied&quot;,&quot;error&quot;:&quot;Forbidden&quot;}
+</code></pre>
+<h3>Interpretation</h3>
+<p>The login endpoint did not proceed to normal credential validation during this test. It returned <code>403 Access Denied</code> even with a valid CSRF token/cookie.</p>
+<p>This may indicate an additional access control layer such as country allowlisting, WAF logic, deployment access rules, or extra required request context.</p>
+<p>Good: arbitrary origin did not receive <code>Access-Control-Allow-Origin</code> on the actual POST response.</p>
+<hr />
+<h2>2. Admin registration endpoint check</h2>
+<p>Endpoint referenced in public JavaScript:</p>
+<pre><code class="language-text">/api/admin/signup-bnpbd-admin
+</code></pre>
+<p>Test performed:</p>
+<pre><code class="language-text">POST https://api-v2.bnpbd.org/api/admin/signup-bnpbd-admin
+Body: {}
+With valid CSRF token/cookie
+</code></pre>
+<p>This empty body was intentionally used to avoid creating any account.</p>
+<h3>Results</h3>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th style="text-align: right;">Status</th>
+<th>ACAO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td style="text-align: right;">401 <code>Unauthorized</code></td>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+</tr>
+<tr>
+<td><code>https://www.bnpbd.org</code></td>
+<td style="text-align: right;">401 <code>Unauthorized</code></td>
+<td><code>https://www.bnpbd.org</code></td>
+</tr>
+<tr>
+<td><code>https://evil.example</code></td>
+<td style="text-align: right;">401 <code>Unauthorized</code></td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<p>Observed body:</p>
+<pre><code class="language-json">{&quot;statusCode&quot;:401,&quot;message&quot;:&quot;Unauthorized&quot;}
+</code></pre>
+<h3>Interpretation</h3>
+<p>Good: the admin registration endpoint appears protected from unauthenticated access. The request was rejected with <code>401 Unauthorized</code> before any account-creation action.</p>
+<p>The public frontend still exposes the route name, but this test indicates the backend requires authorization.</p>
+<hr />
+<h2>3. Fake admin token validation</h2>
+<p>Test performed:</p>
+<pre><code class="language-text">GET https://api-v2.bnpbd.org/api/admin/logged-in-admin-data
+administrator: invalid-token-for-security-test
+</code></pre>
+<h3>Results</h3>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th style="text-align: right;">Status</th>
+<th>ACAO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td style="text-align: right;">401 <code>Unauthorized</code></td>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+</tr>
+<tr>
+<td><code>https://www.bnpbd.org</code></td>
+<td style="text-align: right;">401 <code>Unauthorized</code></td>
+<td><code>https://www.bnpbd.org</code></td>
+</tr>
+<tr>
+<td><code>https://evil.example</code></td>
+<td style="text-align: right;">401 <code>Unauthorized</code></td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<h3>Interpretation</h3>
+<p>Good: fake admin tokens are rejected.</p>
+<p>Review item: <code>https://www.bnpbd.org</code> is still allowed to read responses from some <code>/api/admin/*</code> actual responses. This is not exploitable without a valid <code>administrator</code> token, but the admin API CORS allowlist should be reduced if the public site does not need admin API access.</p>
+<hr />
+<h2>4. CORS status after medium test</h2>
+<p>The previous finding still stands:</p>
+<ul>
+<li>Actual responses for arbitrary origins do not include <code>Access-Control-Allow-Origin</code>.</li>
+<li>But preflight <code>OPTIONS</code> responses reflect arbitrary origins with credentials enabled.</li>
+</ul>
+<p>Risk remains:</p>
+<pre><code class="language-text">Low/Medium hardening issue, not confirmed exploitable in this test.
+</code></pre>
+<p>Recommended fix:</p>
+<ul>
+<li>Do not reflect arbitrary origins on preflight.</li>
+<li>Use the same strict allowlist for OPTIONS and actual responses.</li>
+<li>For admin API routes, allow only origins that genuinely need admin API access.</li>
+<li>Consider limiting admin API CORS to:</li>
+</ul>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org
+</code></pre>
+<p>unless other origins are required.</p>
+<hr />
+<h2>5. Public JavaScript/token-storage status after medium test</h2>
+<p>Bundle checked:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js
+SHA-256: 072d79b37ab3ba050fcc2f5a888b7fce8e03ed67e9425192323eca3475998b0b
+Size: 593,588 bytes
+</code></pre>
+<p>Observed in the public bundle:</p>
+<pre><code class="language-text">localStorage usage: present
+AES usage: present
+custom admin auth header name: administrator
+login route: login-bnpbd-admin
+signup route: signup-bnpbd-admin
+</code></pre>
+<p>Dangerous sink counts from static string scan:</p>
+<pre><code class="language-text">document.write: 0
+eval(: 0
+new Function: 0
+insertAdjacentHTML: 0
+bypassSecurityTrustHtml: 2
+innerHTML: 7
+</code></pre>
+<p>The <code>innerHTML</code>/<code>bypassSecurityTrustHtml</code> occurrences appear consistent with Angular/third-party UI/sanitizer code rather than a confirmed user-controlled sink from the login page.</p>
+<h3>Source map note</h3>
+<p>The source-map URL returned HTTP 200 in one script, but manual content inspection showed it returns the Angular SPA HTML fallback rather than valid source-map JSON. No valid source map exposure was confirmed.</p>
+<hr />
+<h2>Updated severity assessment</h2>
+<h3>Confirmed good controls</h3>
+<ul>
+<li><code>signup-bnpbd-admin</code> rejected unauthenticated empty POST with <code>401 Unauthorized</code>.</li>
+<li>Fake admin token rejected with <code>401 Unauthorized</code>.</li>
+<li>Invalid login attempt with valid CSRF returned <code>403 Access Denied</code>.</li>
+<li>Actual CORS responses did not expose data to <code>https://evil.example</code>.</li>
+<li>No reflected/DOM XSS was confirmed in prior checks.</li>
+</ul>
+<h3>Remaining issues</h3>
+<ol>
+<li>
+<p><strong>CORS preflight misconfiguration</strong>
+   - Severity: Low/Medium hardening issue.
+   - Preflight reflects arbitrary origins with credentials enabled.
+   - Not confirmed exploitable because actual responses and auth/CSRF controls blocked access.</p>
+</li>
+<li>
+<p><strong>Client-side token storage / public encryption keys</strong>
+   - Severity: Low/Informational by itself.
+   - Potentially High if combined with a real admin-origin XSS.
+   - XSS was not confirmed.</p>
+</li>
+<li>
+<p><strong>Missing frontend CSP</strong>
+   - Severity: Medium hardening issue.
+   - Important because if XSS is ever introduced, admin localStorage token material could likely be accessed or used.</p>
+</li>
+</ol>
+<hr />
+<h2>Recommended next steps</h2>
+<ol>
+<li>Fix CORS preflight to stop reflecting arbitrary origins.</li>
+<li>Remove <code>https://www.bnpbd.org</code> from the admin API CORS allowlist unless explicitly required.</li>
+<li>Add a strong <code>Content-Security-Policy</code> on the admin frontend.</li>
+<li>Treat all frontend AES/key constants as public; do not rely on them as secrets.</li>
+<li>Consider server-controlled admin sessions using <code>HttpOnly</code>, <code>Secure</code>, <code>SameSite</code> cookies if feasible.</li>
+<li>Continue authenticated testing only with a dedicated low-privilege admin test account and written limits.</li>
+</ol></body></html>

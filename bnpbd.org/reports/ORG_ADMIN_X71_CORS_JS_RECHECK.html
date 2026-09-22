@@ -1,0 +1,298 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ORG_ADMIN_X71_CORS_JS_RECHECK</title><style>body{font-family:system-ui,-apple-system,sans-serif;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55;color:#222}code,pre{background:#f3f4f6;border-radius:4px}code{padding:.1rem .25rem}pre{padding:1rem;overflow:auto}table{border-collapse:collapse;width:100%;margin:1rem 0}th,td{border:1px solid #ccc;padding:.45rem;text-align:left}th{background:#eee}.notice{background:#fff4cc;padding:.75rem;border-left:4px solid #d99b00}</style></head><body><div class="notice">BNPBD.ORG research report — sanitized for public publication</div><h1>org-admin-x71.bnpbd.org — CORS and public JavaScript re-check</h1>
+<p>Date: 2026-09-22</p>
+<p>Target:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/login
+https://api-v2.bnpbd.org/api/admin/
+</code></pre>
+<p>Scope/method: low-impact public HTTP checks and static review of the public JavaScript bundle. I did not use credentials, brute force, fuzz, exploit, or attempt bypass. One malformed empty JSON POST was sent to the login endpoint only to verify CORS/CSRF behavior; no username/password was submitted.</p>
+<hr />
+<h2>Finding 4 re-check: CORS behavior</h2>
+<h3>Summary</h3>
+<p>The API actual responses mostly enforce an Origin allowlist, but preflight responses for admin endpoints reflect arbitrary origins with credentials enabled.</p>
+<p>This is <strong>not confirmed as directly exploitable</strong> from the checks performed, because actual responses for arbitrary origins did not include <code>Access-Control-Allow-Origin</code>, unauthenticated admin data returned <code>401</code>, and state-changing login POST without a CSRF token returned <code>403 invalid csrf token</code>.</p>
+<p>Still, the preflight behavior should be fixed because it is unnecessarily permissive and can let browsers send cross-origin credentialed unsafe/custom-header requests to admin endpoints.</p>
+<h3>Tested origins</h3>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org
+https://www.bnpbd.org
+https://admin-vote.bnpbd.org
+https://evil.example
+null
+</code></pre>
+<h3>Actual GET: CSRF token endpoint</h3>
+<p>Endpoint:</p>
+<pre><code class="language-text">GET https://api-v2.bnpbd.org/api/csrf-token
+</code></pre>
+<p>Observed behavior:</p>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th style="text-align: right;">Status</th>
+<th>ACAO</th>
+<th>ACAC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td style="text-align: right;">200</td>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>https://www.bnpbd.org</code></td>
+<td style="text-align: right;">200</td>
+<td><code>https://www.bnpbd.org</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>https://admin-vote.bnpbd.org</code></td>
+<td style="text-align: right;">200</td>
+<td>none</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>https://evil.example</code></td>
+<td style="text-align: right;">200</td>
+<td>none</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td style="text-align: right;">200</td>
+<td>none</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<p>The token body is not browser-readable from arbitrary origins because <code>Access-Control-Allow-Origin</code> is absent for those origins.</p>
+<h3>Actual GET: unauthenticated admin data</h3>
+<p>Endpoint:</p>
+<pre><code class="language-text">GET https://api-v2.bnpbd.org/api/admin/logged-in-admin-data
+</code></pre>
+<p>Observed behavior:</p>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th style="text-align: right;">Status</th>
+<th>ACAO</th>
+<th>ACAC</th>
+<th>Body</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td style="text-align: right;">401</td>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td><code>true</code></td>
+<td><code>Unauthorized</code></td>
+</tr>
+<tr>
+<td><code>https://www.bnpbd.org</code></td>
+<td style="text-align: right;">401</td>
+<td><code>https://www.bnpbd.org</code></td>
+<td><code>true</code></td>
+<td><code>Unauthorized</code></td>
+</tr>
+<tr>
+<td><code>https://admin-vote.bnpbd.org</code></td>
+<td style="text-align: right;">401</td>
+<td>none</td>
+<td><code>true</code></td>
+<td><code>Unauthorized</code></td>
+</tr>
+<tr>
+<td><code>https://evil.example</code></td>
+<td style="text-align: right;">401</td>
+<td>none</td>
+<td><code>true</code></td>
+<td><code>Unauthorized</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td style="text-align: right;">401</td>
+<td>none</td>
+<td><code>true</code></td>
+<td><code>Unauthorized</code></td>
+</tr>
+</tbody>
+</table>
+<p>Good: unauthenticated access returned <code>401</code>.</p>
+<p>Review needed: <code>https://www.bnpbd.org</code> is allowed to read responses from an <code>/api/admin/*</code> endpoint. If not required, remove it from the admin API CORS allowlist.</p>
+<h3>Preflight: admin endpoints</h3>
+<p>Endpoints checked:</p>
+<pre><code class="language-text">OPTIONS /api/admin/login-bnpbd-admin
+OPTIONS /api/admin/signup-bnpbd-admin
+OPTIONS /api/admin/logged-in-admin-data
+</code></pre>
+<p>For all tested origins, including <code>https://evil.example</code> and <code>null</code>, the API returned:</p>
+<pre><code class="language-text">204
+Access-Control-Allow-Origin: &lt;reflected Origin&gt;
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE
+Access-Control-Allow-Headers: Authorization,Content-Type,X-CSRF-Token,administrator
+</code></pre>
+<p>This is the main CORS hardening issue.</p>
+<h3>Malformed login POST check</h3>
+<p>Endpoint:</p>
+<pre><code class="language-text">POST https://api-v2.bnpbd.org/api/admin/login-bnpbd-admin
+Body: {}
+</code></pre>
+<p>Results:</p>
+<table>
+<thead>
+<tr>
+<th>Origin</th>
+<th style="text-align: right;">Status</th>
+<th>ACAO</th>
+<th>Body</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td style="text-align: right;">403</td>
+<td><code>https://org-admin-x71.bnpbd.org</code></td>
+<td><code>invalid csrf token</code></td>
+</tr>
+<tr>
+<td><code>https://www.bnpbd.org</code></td>
+<td style="text-align: right;">403</td>
+<td><code>https://www.bnpbd.org</code></td>
+<td><code>invalid csrf token</code></td>
+</tr>
+<tr>
+<td><code>https://admin-vote.bnpbd.org</code></td>
+<td style="text-align: right;">403</td>
+<td>none</td>
+<td><code>invalid csrf token</code></td>
+</tr>
+<tr>
+<td><code>https://evil.example</code></td>
+<td style="text-align: right;">403</td>
+<td>none</td>
+<td><code>invalid csrf token</code></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td style="text-align: right;">403</td>
+<td>none</td>
+<td><code>invalid csrf token</code></td>
+</tr>
+</tbody>
+</table>
+<p>This suggests the reflected preflight is not enough by itself to read the login response or bypass CSRF.</p>
+<h3>Risk assessment</h3>
+<p>Severity: <strong>Low to Medium hardening issue</strong>, not confirmed exploitable from this limited test.</p>
+<p>Why not confirmed exploitable:</p>
+<ul>
+<li>Arbitrary origins did not receive ACAO on actual GET/POST responses.</li>
+<li>Unauthenticated admin data returned <code>401</code>.</li>
+<li>Unsafe POST without CSRF token returned <code>403</code>.</li>
+<li>The admin frontend appears to send the admin token via a custom <code>administrator</code> header; a malicious external origin cannot read the admin origin’s localStorage to obtain that token.</li>
+</ul>
+<p>Why it still matters:</p>
+<ul>
+<li>Preflight responses should not reflect arbitrary origins, especially with <code>Access-Control-Allow-Credentials: true</code>.</li>
+<li>Browsers may proceed with cross-origin unsafe/custom-header requests after a permissive preflight, even if the response cannot be read.</li>
+<li>Any future endpoint that relies on cookies or misses CSRF/auth checks could become more exposed because preflight already allows arbitrary origins.</li>
+</ul>
+<h3>Recommended fix</h3>
+<p>Use a strict CORS allowlist for both preflight and actual responses. Do not reflect arbitrary origins.</p>
+<p>Recommended admin API allowlist:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org
+</code></pre>
+<p>Only add other origins if they genuinely need admin API access.</p>
+<p>For disallowed origins:</p>
+<ul>
+<li>Return no <code>Access-Control-Allow-Origin</code>, or reject preflight with <code>403</code>.</li>
+<li>Do not send <code>Access-Control-Allow-Credentials: true</code> without a matching allowed origin.</li>
+<li>Add <code>Vary: Origin</code> consistently.</li>
+</ul>
+<hr />
+<h2>Finding 5 re-check: public JavaScript route/key exposure</h2>
+<h3>Summary</h3>
+<p>The public Angular bundle exposes admin route names, API endpoint names, token storage key names, and several key-like client-side constants.</p>
+<p>This is <strong>not automatically a remote vulnerability</strong>, because browser JavaScript is always public. However, any value shipped to the browser must be treated as public, not secret.</p>
+<h3>Bundle checked</h3>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js
+</code></pre>
+<p>Observed:</p>
+<pre><code class="language-text">Size: 593,588 bytes
+SHA-256: 072d79b37ab3ba050fcc2f5a888b7fce8e03ed67e9425192323eca3475998b0b
+</code></pre>
+<h3>Source map check</h3>
+<p>Requesting:</p>
+<pre><code class="language-text">https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js.map
+</code></pre>
+<p>returned the SPA HTML fallback, not valid source-map JSON. No valid source map exposure was confirmed.</p>
+<h3>Admin indicators in public JS</h3>
+<p>The public bundle exposes:</p>
+<pre><code class="language-text">Application name: BNPBD.ORG Admin
+API base: https://api-v2.bnpbd.org
+FTP/upload/API base: https://api.bnpbd.org
+Admin API path: /api/admin/
+Admin login route: login
+Admin base/dashboard route: dashboard
+Login API route: login-bnpbd-admin
+Logged-in data API route: logged-in-admin-data
+Admin registration route: signup-bnpbd-admin
+CSRF endpoint: csrf-token
+Admin auth header name: administrator
+CSRF header name: X-CSRF-Token
+</code></pre>
+<h3>Client-side token storage behavior</h3>
+<p>Static review of the minified bundle shows:</p>
+<ul>
+<li>Admin session data is stored in <code>localStorage</code> under an app-specific key.</li>
+<li>The stored object includes fields resembling:</li>
+</ul>
+<pre><code class="language-text">token
+expiredDate
+adminId
+role
+permissions
+adminPageAccess
+</code></pre>
+<ul>
+<li>It is encrypted with client-side AES using a key-like value embedded in the same public JavaScript bundle.</li>
+<li>The admin token is then added to API requests using the custom header:</li>
+</ul>
+<pre><code class="language-text">administrator: &lt;admin token&gt;
+</code></pre>
+<ul>
+<li>For unsafe methods, the frontend adds:</li>
+</ul>
+<pre><code class="language-text">X-CSRF-Token: &lt;loaded csrf token&gt;
+withCredentials: true
+</code></pre>
+<h3>Security interpretation</h3>
+<p>Client-side encryption of localStorage with a key embedded in public JavaScript should be treated as obfuscation, not cryptographic protection.</p>
+<p>If an attacker obtains JavaScript execution on the admin origin, they can either:</p>
+<ol>
+<li>Read/decrypt the token from localStorage because the decryption key is in the public bundle, or</li>
+<li>Use the app’s own runtime/services to send authenticated requests.</li>
+</ol>
+<p>This means the missing frontend CSP from the previous report increases impact: XSS on the admin origin would likely compromise admin sessions.</p>
+<h3>Risk assessment</h3>
+<p>Severity: <strong>Low/Informational by itself</strong>, potentially <strong>High if combined with XSS</strong>.</p>
+<p>Publicly exposed route names are not a vulnerability if the backend enforces auth correctly. Exposed client-side constants become a concern if the team believes they are secrets or uses them for meaningful cryptographic protection.</p>
+<h3>Recommended fixes</h3>
+<ol>
+<li>Treat all frontend constants as public.</li>
+<li>Do not rely on client-side encryption keys to protect admin tokens.</li>
+<li>Prefer short-lived access tokens and server-side refresh/session controls.</li>
+<li>Invalidate admin tokens on logout, password change, role change, and suspected compromise.</li>
+<li>Consider moving sensitive session state to secure, HTTP-only, SameSite cookies if compatible with the architecture, with strong CSRF protection.</li>
+<li>Add a strong CSP to reduce XSS impact.</li>
+<li>Confirm <code>signup-bnpbd-admin</code> is disabled or server-side restricted in production.</li>
+<li>Do not depend on hidden route names; enforce server-side authentication and authorization on every <code>/api/admin/*</code> endpoint.</li>
+</ol>
+<hr />
+<h2>Bottom line</h2>
+<ul>
+<li><strong>Finding 4:</strong> Preflight CORS is definitely too permissive, but actual responses and CSRF prevented a confirmed exploit in this test.</li>
+<li><strong>Finding 5:</strong> Public JS contains admin implementation details and key-like constants. Treat these as public information and remove any reliance on them as secrets.</li>
+</ul></body></html>
