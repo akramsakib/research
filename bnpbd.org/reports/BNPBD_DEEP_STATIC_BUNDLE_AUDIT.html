@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BNPBD Deep Static Bundle Audit</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55}code,pre{background:#f3f4f6;padding:.15rem .3rem;border-radius:4px}h1,h2{color:#17365d}</style></head><body><h1>BNPBD admin frontend — deeper static bundle audit</h1>
+<p>Base: <code>https://org-admin-x71.bnpbd.org/</code></p>
+<p>Scope: public JavaScript retrieval and static analysis only; no credentials, writes, fuzzing, or exploit payloads.</p>
+<p>JavaScript assets analyzed: <strong>5</strong></p>
+<h2><code>https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js</code></h2>
+<ul>
+<li>Status: <code>200</code></li>
+<li>Size: <code>593588</code> bytes</li>
+<li>SHA-256: <code>072d79b37ab3ba050fcc2f5a888b7fce8e03ed67e9425192323eca3475998b0b</code></li>
+<li>API-like paths: <code>/api/admin/</code></li>
+<li>Security/auth strings: <code>AES</code>, <code>X-CSRF-Token</code>, <code>adminTokenSecret</code>, <code>administrator</code>, <code>bypassSecurityTrustHtml</code>, <code>innerHTML</code>, <code>localStorage</code>, <code>sessionStorage</code></li>
+<li>Dangerous-string counts: <code>{"document.write": 0, "eval(": 0, "new Function": 0, "insertAdjacentHTML": 0, "innerHTML": 7, "bypassSecurityTrustHtml": 2}</code></li>
+</ul>
+<h2><code>https://org-admin-x71.bnpbd.org/polyfills.7194fbd22806efaa.js</code></h2>
+<ul>
+<li>Status: <code>200</code></li>
+<li>Size: <code>33874</code> bytes</li>
+<li>SHA-256: <code>e797a8600f4b87b71c8711143a0d949b7e4ed4cf1f6f8f1f920c800b4ead7b74</code></li>
+<li>Dangerous-string counts: <code>{"document.write": 0, "eval(": 0, "new Function": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}</code></li>
+</ul>
+<h2><code>https://org-admin-x71.bnpbd.org/runtime.9d3157fc4cd2b7d6.js</code></h2>
+<ul>
+<li>Status: <code>200</code></li>
+<li>Size: <code>4994</code> bytes</li>
+<li>SHA-256: <code>42f75ff4a0d0cf4d06f310eeb7581be9f806efd9c7f405705ccf8bb5f8a1c4a3</code></li>
+<li>Dangerous-string counts: <code>{"document.write": 0, "eval(": 0, "new Function": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}</code></li>
+</ul>
+<h2><code>https://org-admin-x71.bnpbd.org/scripts.b4bc902bbfe75cc2.js</code></h2>
+<ul>
+<li>Status: <code>200</code></li>
+<li>Size: <code>214098</code> bytes</li>
+<li>SHA-256: <code>5c673cd5e126cfb45fd8b6d039d5d39c34215ffd7393234bb540f49a05db3bfc</code></li>
+<li>Security/auth strings: <code>innerHTML</code></li>
+<li>Dangerous-string counts: <code>{"document.write": 0, "eval(": 0, "new Function": 0, "insertAdjacentHTML": 0, "innerHTML": 16, "bypassSecurityTrustHtml": 0}</code></li>
+</ul>
+<h2><code>https://org-admin-x71.bnpbd.org/zone.js</code></h2>
+<ul>
+<li>Status: <code>ERR</code></li>
+<li>Size: <code>None</code> bytes</li>
+<li>SHA-256: ``</li>
+<li>Dangerous-string counts: <code>{}</code></li>
+</ul>
+<h2>Assessment</h2>
+<ul>
+<li>Public bundles expose application metadata, route names, API paths, and client-side auth/storage implementation details.</li>
+<li>Static strings alone do not establish exploitability or authorization bypass.</li>
+<li>Client-side encryption keys must be treated as public because they ship to every browser.</li>
+<li>The separate API audit report records the confirmed preflight CORS misconfiguration.</li>
+</ul></body></html>
