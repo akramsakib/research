@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BNPBD API Safe Audit</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55}code,pre{background:#f3f4f6;padding:.15rem .3rem;border-radius:4px}table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:.4rem}</style></head><body><h1>BNPBD API route and behavior audit</h1>
+<p>Target: <code>https://api-v2.bnpbd.org</code></p>
+<p>Scope: low-rate GET/OPTIONS only; no credentials, POST, account creation, data modification, fuzzing, or brute force.</p>
+<p>Bundle-derived candidate paths examined: <strong>5</strong>
+HTTP observations recorded: <strong>20</strong></p>
+<h2>Candidate paths</h2>
+<ul>
+<li><code>/api/admin/</code></li>
+<li><code>/api/admin/logged-in-admin-data</code></li>
+<li><code>/api/admin/login-bnpbd-admin</code></li>
+<li><code>/api/admin/signup-bnpbd-admin</code></li>
+<li><code>/api/csrf-token</code></li>
+</ul>
+<h2>Interesting observations</h2>
+<ul>
+<li><code>OPTIONS /api/admin/</code> from <code>https://evil.example</code> → <strong>204</strong>, ACAO=<code>https://evil.example</code>, body: ``</li>
+<li><code>OPTIONS /api/admin/logged-in-admin-data</code> from <code>https://evil.example</code> → <strong>204</strong>, ACAO=<code>https://evil.example</code>, body: ``</li>
+<li><code>OPTIONS /api/admin/login-bnpbd-admin</code> from <code>https://evil.example</code> → <strong>204</strong>, ACAO=<code>https://evil.example</code>, body: ``</li>
+<li><code>OPTIONS /api/admin/signup-bnpbd-admin</code> from <code>https://evil.example</code> → <strong>204</strong>, ACAO=<code>https://evil.example</code>, body: ``</li>
+<li><code>OPTIONS /api/csrf-token</code> from <code>https://evil.example</code> → <strong>204</strong>, ACAO=<code>https://evil.example</code>, body: ``</li>
+</ul>
+<h2>Interpretation</h2>
+<ul>
+<li>A route name or successful preflight is not proof of authorization bypass.</li>
+<li>Actual data exposure requires an allowed origin and valid authorization; this pass did not use credentials.</li>
+<li>Any suspected issue requires targeted confirmation with a dedicated test account or staging environment.</li>
+</ul></body></html>
