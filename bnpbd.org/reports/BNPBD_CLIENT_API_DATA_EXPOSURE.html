@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BNPBD Client API Data Exposure</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55}code,pre{background:#f3f4f6;padding:.15rem .3rem;border-radius:4px}</style></head><body><h1>BNPBD client-side API data exposure check</h1>
+<p>Target: <code>https://api-v2.bnpbd.org</code></p>
+<p>Scope: unauthenticated low-rate GET requests to API paths exposed by public client bundles. No credentials, POST, mutations, fuzzing, or brute force.</p>
+<p>Candidate API paths: <strong>5</strong>
+GET requests: <strong>5</strong></p>
+<h2>Results</h2>
+<ul>
+<li><code>/api/admin/</code> → <strong>404</strong>, 73 bytes, <code>application/json</code>, JSON-like=<code>True</code>, record-like=<code>False</code>, possible-sensitive-terms=<code>False</code>, ACAO=<code>None</code></li>
+<li><code>/api/admin/logged-in-admin-data</code> → <strong>401</strong>, 43 bytes, <code>application/json</code>, JSON-like=<code>True</code>, record-like=<code>False</code>, possible-sensitive-terms=<code>False</code>, ACAO=<code>None</code></li>
+<li><code>/api/admin/login-bnpbd-admin</code> → <strong>401</strong>, 43 bytes, <code>application/json</code>, JSON-like=<code>True</code>, record-like=<code>False</code>, possible-sensitive-terms=<code>False</code>, ACAO=<code>None</code></li>
+<li><code>/api/admin/signup-bnpbd-admin</code> → <strong>401</strong>, 43 bytes, <code>application/json</code>, JSON-like=<code>True</code>, record-like=<code>False</code>, possible-sensitive-terms=<code>False</code>, ACAO=<code>None</code></li>
+<li><code>/api/csrf-token</code> → <strong>200</strong>, 52 bytes, <code>application/json</code>, JSON-like=<code>True</code>, record-like=<code>False</code>, possible-sensitive-terms=<code>True</code>, ACAO=<code>None</code></li>
+</ul>
+<h2>Potentially interesting 200 responses</h2>
+<ul>
+<li><code>/api/csrf-token</code> returned a non-empty 200 response (52 bytes; JSON-like=True; possible-sensitive-terms=True). Response content was not copied into this public report.</li>
+</ul>
+<h2>Assessment</h2>
+<ul>
+<li>A JSON response or public configuration value is not automatically a vulnerability.</li>
+<li>The report intentionally stores response metadata only and does not publish returned data.</li>
+<li>Admin data endpoints previously tested returned 401 without a valid administrator token.</li>
+<li>A confirmed data-exposure finding requires showing that sensitive records are accessible without authorization, which this pass did not establish unless specifically listed above.</li>
+</ul></body></html>
