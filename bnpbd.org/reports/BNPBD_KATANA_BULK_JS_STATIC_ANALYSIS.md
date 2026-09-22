@@ -1,0 +1,169 @@
+# BNPBD Katana bulk JavaScript static analysis
+
+JavaScript URLs analyzed: **627**
+Successfully retrieved: **253**
+API-like literals found across bundles: **27**
+Bundles containing auth/storage/security strings: **111**
+
+## API-like literals
+
+- `/api/address-constituency/`
+- `/api/admin/`
+- `/api/cabinet/`
+- `/api/client/`
+- `/api/committee-fees/`
+- `/api/district/`
+- `/api/division/`
+- `/api/executive/`
+- `/api/founding-historic/`
+- `/api/latestVideo/`
+- `/api/motto/`
+- `/api/news-category/`
+- `/api/nineteen-points/`
+- `/api/notices/`
+- `/api/our-vision/`
+- `/api/photo/`
+- `/api/plan-180-days/`
+- `/api/popup/`
+- `/api/reports/`
+- `/api/settings/`
+- `/api/standing/`
+- `/api/story/`
+- `/api/tag/`
+- `/api/ten-points/`
+- `/api/thirtyOne-points/`
+- `/api/user/`
+- `/api/vote-entry/`
+
+## Bundle summaries
+
+- `https://admin-vote.bnpbd.org/main.573c8094857a5997.js` — 602183 bytes; auth/security strings=AES,X-CSRF-Token,administrator,bypassSecurityTrustHtml,innerHTML,localStorage,sessionStorage; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 7, "bypassSecurityTrustHtml": 2}
+- `https://admin-vote.bnpbd.org/scripts.b4bc902bbfe75cc2.js` — 214098 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 16, "bypassSecurityTrustHtml": 0}
+- `https://bnpbd.org/chunk-BJS2K7EC.js` — 74059 bytes; auth/security strings=AES,localStorage,sessionStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://bnpbd.org/chunk-E5ARMF22.js` — 117268 bytes; auth/security strings=bypassSecurityTrustHtml; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 1}
+- `https://bnpbd.org/chunk-KGACTMA2.js` — 245156 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 3, "bypassSecurityTrustHtml": 0}
+- `https://bnpbd.org/chunk-TNIGYLWD.js` — 3543 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://bnpbd.org/main-YVGOPUQZ.js` — 102661 bytes; auth/security strings=Authorization,X-CSRF-Token; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://org-admin-x71.bnpbd.org/main.8a6f75668d88c69c.js` — 593588 bytes; auth/security strings=AES,X-CSRF-Token,administrator,bypassSecurityTrustHtml,innerHTML,localStorage,sessionStorage; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 7, "bypassSecurityTrustHtml": 2}
+- `https://org-admin-x71.bnpbd.org/scripts.b4bc902bbfe75cc2.js` — 214098 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 16, "bypassSecurityTrustHtml": 0}
+- `https://photoframe.bnpbd.org/_next/static/chunks/80a5d4772bbe08f0.js` — 54261 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://photoframe.bnpbd.org/_next/static/chunks/aee6c7720838f8a2.js` — 224413 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 7, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-3DEJD2KO.js` — 31312 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 2, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-3HVVT4YN.js` — 8945 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-5CHP3BX5.js` — 19223 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-6RIKO6KJ.js` — 58787 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-6Z3A3MTG.js` — 18879 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-7NNTEW5P.js` — 95890 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 40, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-7RDVFNJT.js` — 10508 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-AEGX2JEQ.js` — 14819 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-DOEEZSBM.js` — 13760 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-EDCAA3XK.js` — 10203 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-EFBVU433.js` — 73552 bytes; auth/security strings=AES,localStorage,sessionStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-F5AIZMZI.js` — 18943 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-FV4EV6TM.js` — 15984 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 12, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-G6ZIU2RL.js` — 7788 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-GM7UHQYR.js` — 13566 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-HVPKXAKW.js` — 15945 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-IUYAHHE2.js` — 21136 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 14, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-LK5Z4TA5.js` — 40062 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-MBJABV4S.js` — 206108 bytes; auth/security strings=innerHTML; API literals=3; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 11, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-MKOUZBSE.js` — 15846 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-O7BM77DM.js` — 53912 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 12, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-PN4FODB6.js` — 3302 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-QMNDSW7O.js` — 14185 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-RDQDFC7P.js` — 14013 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-RG5Z2UUH.js` — 15005 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 14, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-RYLFKVCB.js` — 17058 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-TF66OI4M.js` — 13745 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-VFL6IN4B.js` — 19116 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-VG6BFF4I.js` — 39105 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-XTHCGN3Q.js` — 11442 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/chunk-ZTZTUGGO.js` — 357090 bytes; auth/security strings=bypassSecurityTrustHtml,innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 3, "bypassSecurityTrustHtml": 1}
+- `https://test-ui.bnpbd.org/chunk-ZVUSDWP2.js` — 25453 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://test-ui.bnpbd.org/main-DPNYCFRT.js` — 67072 bytes; auth/security strings=Authorization,X-CSRF-Token; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-222MDPD5.js` — 55192 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-2TX7QNEU.js` — 13389 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-36OQRKW7.js` — 14203 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-3KAW4LYS.js` — 15656 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-3ZBNAGC6.js` — 93582 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-43ZDBRE6.js` — 14207 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-4HKKF7MO.js` — 19429 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-7QQB43SQ.js` — 18799 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 2, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-7YZ6LOL7.js` — 12619 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-A536EN4E.js` — 18406 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-AAXR3AGG.js` — 25958 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-B6CBOA4H.js` — 15063 bytes; auth/security strings=bypassSecurityTrustHtml; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 1}
+- `https://vote-management.bnpbd.org/chunk-B6ZRXAWP.js` — 33720 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 2, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-BGDXLJ35.js` — 19720 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-DVFU4CQW.js` — 9029 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-DX3RNA7M.js` — 102909 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 32, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-G52VDA6M.js` — 64247 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-GZXUURMD.js` — 10317 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-HJ24LUWP.js` — 15235 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-IBSDKCVD.js` — 16919 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-LS36LBBP.js` — 22435 bytes; auth/security strings=none; API literals=4; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-NDRBYOV5.js` — 21267 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-NI5XPDM7.js` — 16202 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-OOPJTJEY.js` — 14740 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-PDIBFDM2.js` — 3546 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-PQGAZMCP.js` — 15062 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-RA7YH4FJ.js` — 14429 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-RI4QILQO.js` — 7770 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-SM23NEQQ.js` — 265411 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 3, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-SQELJEZ3.js` — 16103 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 12, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-TDLI4FBQ.js` — 50018 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-TQGZQKJR.js` — 15917 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-URFMDTZN.js` — 12657 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 2, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-V6LZGTPN.js` — 74027 bytes; auth/security strings=AES,localStorage,sessionStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-W7JCEPG4.js` — 39067 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-WD7CZZTP.js` — 29862 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-XBV75WHU.js` — 14974 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/chunk-YW6P6ZUS.js` — 27499 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://vote-management.bnpbd.org/main-I3FBRR3J.js` — 120906 bytes; auth/security strings=Authorization,X-CSRF-Token; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-24BFUDWH.js` — 22088 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-2XGMK7U2.js` — 15902 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-3XJ42KYM.js` — 15665 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 3, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-4CJA4RT4.js` — 15646 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-4H7RLUMS.js` — 194010 bytes; auth/security strings=innerHTML; API literals=2; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 15, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-5YPNFQ6S.js` — 14197 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-6BNLZ74C.js` — 18396 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 10, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-7WLFE7PB.js` — 12372 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-AKUECNCM.js` — 27712 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-BEKHAJLF.js` — 8697 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-BJS2K7EC.js` — 74059 bytes; auth/security strings=AES,localStorage,sessionStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-DEJ3H72E.js` — 14964 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-DXSWFRCB.js` — 7433 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-DZ6LBHCD.js` — 10311 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-E5ARMF22.js` — 117268 bytes; auth/security strings=bypassSecurityTrustHtml; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 1}
+- `https://www.bnpbd.org/chunk-EPZAERNJ.js` — 98394 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 28, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-FBGZYRPO.js` — 14446 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-GJRPTN5H.js` — 38633 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-HPRYL437.js` — 12655 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 2, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-JZOUXDQ3.js` — 163356 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-KGACTMA2.js` — 245156 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 3, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-KNHFPCER.js` — 8044 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-KSHQXVLD.js` — 15257 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-OHBOCJ7R.js` — 50007 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-OVNMODTK.js` — 16097 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 12, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-R3KZRV7X.js` — 33709 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 2, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-R4SM2VI2.js` — 12637 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-STIN3W2G.js` — 19705 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-TNIGYLWD.js` — 3543 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-UNS74JBL.js` — 73139 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 18, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-VOQTMSYE.js` — 25821 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 4, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-VWLXOHPT.js` — 65598 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-XFNFGHTS.js` — 76247 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 3, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-XGVXP54X.js` — 14762 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-Y4ARJYJ6.js` — 19108 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 2, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-YCL7GRLX.js` — 14196 bytes; auth/security strings=innerHTML; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 6, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-YNZPEMS6.js` — 16912 bytes; auth/security strings=none; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-Z55OBZXD.js` — 30791 bytes; auth/security strings=localStorage; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/chunk-ZKKMHK6V.js` — 19447 bytes; auth/security strings=innerHTML; API literals=1; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 8, "bypassSecurityTrustHtml": 0}
+- `https://www.bnpbd.org/main-YVGOPUQZ.js` — 102661 bytes; auth/security strings=Authorization,X-CSRF-Token; API literals=0; sinks={"eval(": 0, "new Function": 0, "document.write": 0, "insertAdjacentHTML": 0, "innerHTML": 0, "bypassSecurityTrustHtml": 0}
+
+## Assessment
+
+- This is static source inventory, not proof of exploitability.
+- Public bundles can expose routes and implementation metadata; backend authorization remains decisive.
+- No response bodies, credentials, or tokens are included in this public report.
+- Potential findings require targeted, authorized confirmation.
