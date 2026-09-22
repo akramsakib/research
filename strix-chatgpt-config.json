@@ -1,0 +1,6 @@
+{
+  "env": {
+    "STRIX_LLM": "chatgpt/gpt-5.4",
+    "STRIX_TELEMETRY": "0"
+  }
+}
