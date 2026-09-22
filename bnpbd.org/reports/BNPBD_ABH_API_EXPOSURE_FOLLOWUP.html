@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BNPBD ABH API Exposure Follow-up</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55}code,pre{background:#f3f4f6;padding:.15rem .3rem;border-radius:4px}</style></head><body><h1>BNPBD ABH follow-up — low-impact API exposure checks</h1>
+<p>Target: <code>https://api-v2.bnpbd.org</code></p>
+<p>Scope: small fixed list of common health/documentation/security paths using GET only. No credentials, writes, fuzzing, brute force, or high-volume scanning.</p>
+<h2>Results</h2>
+<ul>
+<li><code>/</code> → <strong>404</strong>, 63 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/health</code> → <strong>404</strong>, 69 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/status</code> → <strong>404</strong>, 69 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api</code> → <strong>404</strong>, 66 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api/health</code> → <strong>404</strong>, 73 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api/status</code> → <strong>404</strong>, 73 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api/docs</code> → <strong>404</strong>, 71 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api-json</code> → <strong>404</strong>, 71 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/openapi.json</code> → <strong>404</strong>, 75 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/swagger</code> → <strong>404</strong>, 70 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/swagger/</code> → <strong>404</strong>, 71 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/swagger.json</code> → <strong>404</strong>, 75 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/docs</code> → <strong>404</strong>, 67 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/graphql</code> → <strong>404</strong>, 70 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api/admin</code> → <strong>404</strong>, 72 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api/admin/</code> → <strong>404</strong>, 73 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api/admin/logged-in-admin-data</code> → <strong>401</strong>, 43 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/api/csrf-token</code> → <strong>200</strong>, 52 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>True</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/robots.txt</code> → <strong>404</strong>, 73 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+<li><code>/.well-known/security.txt</code> → <strong>404</strong>, 87 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; response body preview: <code>&lt;redacted&gt;</code></li>
+</ul>
+<h2>Assessment</h2>
+<ul>
+<li>No response body was copied in full into this public report.</li>
+<li>Documentation or health endpoints are not automatically vulnerabilities; exposure must be assessed for sensitive content.</li>
+<li>Authenticated authorization testing still requires a dedicated test account.</li>
+</ul></body></html>
