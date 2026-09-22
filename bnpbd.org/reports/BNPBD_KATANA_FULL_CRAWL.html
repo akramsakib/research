@@ -1,0 +1,52 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BNPBD_KATANA_FULL_CRAWL</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55}code,pre{background:#f3f4f6;padding:.15rem .3rem;border-radius:4px}li{margin:.15rem 0}</style></head><body><h1>BNPBD full Katana crawl and source inventory</h1>
+<p>Scope: authorized production-safe crawl across the approved BNPBD host list. Katana used GET crawling only with depth 2, concurrency 2, and rate limit 1 request/second. No forms, credentials, writes, fuzzing, or brute force.</p>
+<ul>
+<li>URLs discovered: <strong>899</strong></li>
+<li>Hosts observed: <strong>11</strong></li>
+<li>JavaScript assets/URLs observed: <strong>627</strong></li>
+<li>API-looking URLs observed: <strong>15</strong></li>
+</ul>
+<h2>Hosts observed</h2>
+<ul>
+<li><code>admin-vote.bnpbd.org</code></li>
+<li><code>api-v2.bnpbd.org</code></li>
+<li><code>api-vote.bnpbd.org</code></li>
+<li><code>api.bnpbd.org</code></li>
+<li><code>bnpbd.org</code></li>
+<li><code>election26.bnpbd.org</code></li>
+<li><code>org-admin-x71.bnpbd.org</code></li>
+<li><code>photoframe.bnpbd.org</code></li>
+<li><code>test-ui.bnpbd.org</code></li>
+<li><code>vote-management.bnpbd.org</code></li>
+<li><code>www.bnpbd.org</code></li>
+</ul>
+<h2>API-looking URLs</h2>
+<ul>
+<li><code>https://admin-vote.bnpbd.org/api/</code></li>
+<li><code>https://admin-vote.bnpbd.org/api/admin/</code></li>
+<li><code>https://api-v2.bnpbd.org/api/our-service/get-all-by</code></li>
+<li><code>https://api-v2.bnpbd.org/api/payment/ssl-ipn</code></li>
+<li><code>https://api-v2.bnpbd.org/api/portfolio/get-all-data</code></li>
+<li><code>https://api-v2.bnpbd.org/api/seo-page/get-by/all-program</code></li>
+<li><code>https://api-v2.bnpbd.org/api/seo-page/get-by/our-leaders</code></li>
+<li><code>https://bnpbd.org/api/user/</code></li>
+<li><code>https://org-admin-x71.bnpbd.org/api/</code></li>
+<li><code>https://org-admin-x71.bnpbd.org/api/admin/</code></li>
+<li><code>https://test-ui.bnpbd.org/api/</code></li>
+<li><code>https://test-ui.bnpbd.org/api/user/</code></li>
+<li><code>https://vote-management.bnpbd.org/api/</code></li>
+<li><code>https://vote-management.bnpbd.org/api/user/</code></li>
+<li><code>https://www.bnpbd.org/api/</code></li>
+</ul>
+<h2>Analysis status</h2>
+<ul>
+<li>The crawl inventory is used to drive source and API analysis.</li>
+<li>Public content API schemas are documented separately without publishing response values.</li>
+<li>Payment/IPN-looking routes were not POSTed or supplied payment data.</li>
+<li>Any authenticated route or state-changing behavior requires a dedicated test account and explicit action scope.</li>
+</ul>
+<h2>Publication handling</h2>
+<ul>
+<li>Raw response bodies are not included in the public report.</li>
+<li>Internal credentials, tokens, and connection metadata are excluded.</li>
+</ul></body></html>

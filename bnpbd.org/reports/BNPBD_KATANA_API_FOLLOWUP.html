@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BNPBD_KATANA_API_FOLLOWUP</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem;line-height:1.55}code,pre{background:#f3f4f6;padding:.15rem .3rem;border-radius:4px}li{margin:.15rem 0}</style></head><body><h1>BNPBD Katana-discovered API follow-up</h1>
+<p>Scope: 899 low-rate Katana-discovered URLs across 11 hosts; this report records a focused GET-only verification of API-looking paths. No credentials, writes, fuzzing, or brute force.</p>
+<h2>GET results</h2>
+<ul>
+<li><code>https://api-v2.bnpbd.org/api/our-service/get-all-by</code> → <strong>200</strong>, 3000 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>True</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://api-v2.bnpbd.org/api/payment/ssl-ipn</code> → <strong>404</strong>, 82 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://api-v2.bnpbd.org/api/portfolio/get-all-data</code> → <strong>200</strong>, 3000 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://api-v2.bnpbd.org/api/seo-page/get-by/all-program</code> → <strong>200</strong>, 600 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://api-v2.bnpbd.org/api/seo-page/get-by/our-leaders</code> → <strong>200</strong>, 502 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://bnpbd.org/api/user/</code> → <strong>404</strong>, 1086 bytes, <code>text/html</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://test-ui.bnpbd.org/api/user/</code> → <strong>502</strong>, 166 bytes, <code>text/html</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://api-v2.bnpbd.org/api/csrf-token</code> → <strong>200</strong>, 52 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>True</code>; body=<code>&lt;redacted&gt;</code></li>
+<li><code>https://api-v2.bnpbd.org/api/admin/logged-in-admin-data</code> → <strong>401</strong>, 43 bytes, <code>application/json</code>, ACAO=<code>None</code>, sensitive-term-indicator=<code>False</code>; body=<code>&lt;redacted&gt;</code></li>
+</ul>
+<h2>Assessment</h2>
+<ul>
+<li>A GET response from a public content endpoint is not automatically a vulnerability; authorization and data sensitivity must be assessed.</li>
+<li>The payment IPN path was not POSTed or supplied any payment data.</li>
+<li>No response body is published in this report.</li>
+<li>Katana output should be reviewed for route inventory and source analysis; authenticated endpoints require a dedicated test account.</li>
+</ul></body></html>

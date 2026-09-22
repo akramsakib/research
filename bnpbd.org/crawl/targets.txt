@@ -1,0 +1,10 @@
+https://bnpbd.org/
+https://www.bnpbd.org/
+https://org-admin-x71.bnpbd.org/
+https://admin-vote.bnpbd.org/
+https://vote-management.bnpbd.org/
+https://election26.bnpbd.org/
+https://test-ui.bnpbd.org/
+https://api-v2.bnpbd.org/
+https://api-vote.bnpbd.org/
+https://api.bnpbd.org/
